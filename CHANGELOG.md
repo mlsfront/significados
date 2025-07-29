@@ -1,5 +1,24 @@
 # Changelog — Significados
 
+## [v0.2.0] — 2025-07-29
+
+### Adicionado
+
+- Layout inicial do frontend SPA em `index.html` com duas seções:
+  - Cadastro de nova palavra
+  - Listagem e busca de palavras
+- Estilos responsivos com `public/css/style.css` usando Flexbox
+- Estrutura básica do banco de dados local com IndexedDB:
+  - Criação da store `palavras` com `keyPath` autoincrementado
+  - Indexação por campo `termo`
+- Funções `abrirDB`, `salvarPalavra` e `listarPalavras` em `db.js`
+- Integração com o formulário usando `app.js`:
+  - Salvamento no IndexedDB
+  - Renderização da lista
+  - Busca por termo em tempo real
+
+---
+
 ## [v0.1.0] — 2025-07-29
 
 ### Adicionado

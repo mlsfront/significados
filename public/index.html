@@ -13,9 +13,33 @@
     <h1>Significados</h1>
   </header>
 
+  <main>
+    <section id="cadastro">
+      <h2>Nova Palavra</h2>
+      <form id="form-palavra">
+        <input type="text" name="termo" placeholder="Palavra" required />
+        <input type="text" name="classe" placeholder="Classe gramatical" />
+        <textarea name="denotativo" placeholder="Significado denotativo"></textarea>
+        <textarea name="conotacoes" placeholder="Significados conotativos (opcional)"></textarea>
+        <input type="text" name="registro" placeholder="Registro de uso" />
+        <input type="text" name="traducao" placeholder="Tradução" />
+
+        <button type="submit">Salvar</button>
+      </form>
+    </section>
+
+    <section id="lista">
+      <h2>Palavras Cadastradas</h2>
+      <input type="search" id="busca" placeholder="Buscar por termo..." />
+      <ul id="lista-palavras"></ul>
+    </section>
+  </main>
+
   <footer>
     <small>Projeto Significados © 2025</small>
   </footer>
-  
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
