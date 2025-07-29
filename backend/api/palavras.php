@@ -34,8 +34,8 @@ function importarPalavras($palavras) {
     }
 
     $sql = "
-        INSERT INTO palavras (uuid, termo, classe, denotativo, conotacoes, registro, traducao, updated_at)
-        VALUES (:uuid, :termo, :classe, :denotativo, :conotacoes, :registro, :traducao, :updated_at)
+        INSERT INTO palavras (uuid, termo, classe, denotativo, conotacoes, registro, traducao, etimologia, updated_at)
+        VALUES (:uuid, :termo, :classe, :denotativo, :conotacoes, :registro, :traducao, :etimologia, :updated_at)
         ON DUPLICATE KEY UPDATE 
             termo = IF(VALUES(updated_at) > updated_at, VALUES(termo), termo),
             classe = IF(VALUES(updated_at) > updated_at, VALUES(classe), classe),
@@ -43,6 +43,7 @@ function importarPalavras($palavras) {
             conotacoes = IF(VALUES(updated_at) > updated_at, VALUES(conotacoes), conotacoes),
             registro = IF(VALUES(updated_at) > updated_at, VALUES(registro), registro),
             traducao = IF(VALUES(updated_at) > updated_at, VALUES(traducao), traducao),
+            etimologia = IF(VALUES(updated_at) > updated_at, VALUES(etimologia), etimologia),
             updated_at = GREATEST(updated_at, VALUES(updated_at))
     ";
 
