@@ -1,5 +1,20 @@
 # Changelog — Significados
 
+## [v0.6.0] - 2025-07-29
+
+### Adicionado
+- Implementada exclusão lógica de palavras no IndexedDB, marcando como `deleted: true` para evitar remoção imediata e garantir sincronização segura.
+- Função `limparPalavrasExcluidas()` criada para remover permanentemente as palavras marcadas como excluídas após exportação para MySQL.
+- Atualização no fluxo de exclusão na interface para refletir a exclusão lógica, com confirmação do usuário.
+- Exportação para MySQL agora executa limpeza automática das palavras logicamente excluídas localmente, mantendo banco sincronizado e limpo.
+- Melhorias gerais na sincronização entre IndexedDB e backend MySQL para evitar conflitos de dados e perda acidental.
+
+### Corrigido
+- Ajustes no carregamento da lista para ignorar palavras marcadas como excluídas.
+- Tratamento aprimorado para evitar inconsistências entre o banco local e o servidor durante operações CRUD.
+
+---
+
 ## \[v0.5.0] - 2025-07-29
 
 ### ✨ Novidades

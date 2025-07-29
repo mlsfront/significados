@@ -3,8 +3,10 @@ import {
   listarPalavras,
   buscarPalavraPorId,
   atualizarPalavra,
-  excluirPalavra
-} from './db.js'; // ajuste caminho se necessário
+  excluirPalavra,
+  abrirDB
+} from './db.js';
+
 import {
   abrirModal,
   fecharModal,
@@ -13,16 +15,13 @@ import {
   salvarConfiguracoes
 } from './modal.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('importar').addEventListener('change', function () {
     importarDados(this.files[0]);
   });
 
   const form = document.getElementById('form-palavra');
-  const lista = document.getElementById('lista-palavras');
   const busca = document.getElementById('busca');
-
   let palavraEditandoId = null;
 
   form.addEventListener('submit', async (e) => {
@@ -46,17 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarPalavras();
 });
 
-// 🔄 Agora essa função é global
+// 🔄 Atualiza a lista de palavras na interface
 async function carregarPalavras() {
   const busca = document.getElementById('busca');
   const lista = document.getElementById('lista-palavras');
-  const form = document.getElementById('form-palavra');
   const termoBusca = busca.value.toLowerCase();
   const palavras = await listarPalavras();
+
   lista.innerHTML = '';
 
   palavras
-    .filter(p => p.termo.toLowerCase().includes(termoBusca))
+    .filter(p => !p.deleted && p.termo.toLowerCase().includes(termoBusca))
     .forEach(p => {
       const li = document.createElement('li');
       li.innerHTML = `
@@ -81,43 +80,44 @@ async function carregarPalavras() {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
       const palavra = await buscarPalavraPorId(id);
-      preencherModalCrud(palavra); // usa modal para edição
+      preencherModalCrud(palavra);
     });
   });
 
   document.querySelectorAll('.excluir').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const id = btn.dataset.id; // uuid é string
+      const id = btn.dataset.id;
       if (confirm('Tem certeza que deseja excluir esta palavra?')) {
-        await excluirPalavra(id);
-        carregarPalavras();
+        const palavra = await buscarPalavraPorId(id);
+        if (palavra) {
+          palavra.deleted = true;
+          await salvarPalavra(palavra);
+          carregarPalavras();
+        }
       }
     });
   });
 }
 
-// 📤 Exportar
+// 📤 Exporta dados para JSON
 async function exportarDados() {
   const palavras = await listarPalavras();
-  console.log("Resultado de listarPalavras:", palavras);
   const blob = new Blob([JSON.stringify(palavras, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement('a');
   a.href = url;
   a.download = 'palavras_backup.json';
   a.click();
-
   URL.revokeObjectURL(url);
 }
 
-// 📥 Importar
+// 📥 Importa dados de JSON
 function importarDados(arquivo) {
   const reader = new FileReader();
   reader.onload = async () => {
     const dados = JSON.parse(reader.result);
     for (const palavra of dados) {
-      delete palavra.id; // evitar conflitos
+      delete palavra.id;
       await salvarPalavra(palavra);
     }
     carregarPalavras();
@@ -125,10 +125,9 @@ function importarDados(arquivo) {
   reader.readAsText(arquivo);
 }
 
-// 📤 Exportar para MySQL
+// 📤 Exporta para MySQL e limpa localmente os excluídos
 async function exportarParaMySQL() {
-  const palavras = await listarPalavras(); // Pega as palavras do IndexedDB
-
+  const palavras = await listarPalavras();
   const response = await fetch('/significados/backend/api/palavras.php?acao=importar', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -140,6 +139,9 @@ async function exportarParaMySQL() {
     const resultado = JSON.parse(text);
     if (resultado.status === 'success') {
       alert('Palavras exportadas com sucesso!');
+      await limparPalavrasExcluidas(); // 🔥 remove os `deleted: true`
+      carregarPalavras(); // atualiza UI
+      fecharModal('modal-config');
     } else {
       alert('Erro ao exportar palavras');
       console.error(resultado);
@@ -150,18 +152,47 @@ async function exportarParaMySQL() {
   }
 }
 
-// 📥 Importar de MySQL para IndexedDB
+// 📥 Importa do MySQL
 async function importarDoMySQL() {
   const response = await fetch('/significados/backend/api/palavras.php');
   const palavras = await response.json();
-
   for (const palavra of palavras) {
-    await salvarPalavra(palavra);  // Salva no IndexedDB
+    await salvarPalavra(palavra);
   }
-
-  carregarPalavras();  // Atualiza a lista de palavras na interface
+  alert('Palavras importadas com sucesso!');
+  carregarPalavras();
+  fecharModal('modal-config');
 }
 
+// 🧹 Remove definitivamente palavras com deleted=true
+async function limparPalavrasExcluidas() {
+  const db = await abrirDB();
+
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('palavras', 'readwrite');
+    const store = tx.objectStore('palavras');
+    const getAll = store.getAll();
+
+    getAll.onsuccess = () => {
+      const palavras = getAll.result || [];
+      palavras.forEach(p => {
+        if (p.deleted) store.delete(p.uuid);
+      });
+    };
+
+    tx.oncomplete = () => {
+      console.info('Palavras excluídas logicamente foram removidas do IndexedDB.');
+      resolve(true);
+    };
+
+    tx.onerror = () => {
+      console.error('Erro ao limpar palavras excluídas.');
+      reject('Erro ao limpar palavras excluídas');
+    };
+  });
+}
+
+// 🌐 Disponibiliza no escopo global
 window.exportarDados = exportarDados;
 window.importarDados = importarDados;
 window.exportarParaMySQL = exportarParaMySQL;
@@ -169,4 +200,6 @@ window.importarDoMySQL = importarDoMySQL;
 window.abrirModal = abrirModal;
 window.fecharModal = fecharModal;
 window.salvarConfiguracoes = salvarConfiguracoes;
+window.limparPalavrasExcluidas = limparPalavrasExcluidas;
+
 export { carregarPalavras };

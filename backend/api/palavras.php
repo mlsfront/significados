@@ -52,6 +52,13 @@ function importarPalavras($palavras) {
         $stmt = $pdo->prepare($sql);
 
         foreach ($palavras as $p) {
+            if (!empty($p['deleted'])) {
+                // Remover do banco se marcado como excluído
+                $stmtDelete = $pdo->prepare("DELETE FROM palavras WHERE uuid = :uuid");
+                $stmtDelete->execute([':uuid' => $p['uuid']]);
+                continue;
+            }
+            
             $updatedAt = $p['updated_at'] ?? null;
             if (!$updatedAt || !strtotime($updatedAt)) {
                 $updatedAt = date('Y-m-d H:i:s');

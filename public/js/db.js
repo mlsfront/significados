@@ -41,8 +41,10 @@ async function salvarPalavra(palavra) {
   const palavraComDados = {
     ...palavra,
     uuid: palavra.uuid || uuidv4(),
+    deleted: palavra.deleted ?? false,
     updated_at: agora
   };
+
 
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
