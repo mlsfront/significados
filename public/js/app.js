@@ -1,3 +1,11 @@
+import {
+  salvarPalavra,
+  listarPalavras,
+  buscarPalavraPorId,
+  atualizarPalavra,
+  excluirPalavra
+} from './db.js'; // ajuste caminho se necessário
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('importar').addEventListener('change', function () {
     importarDados(this.files[0]);
@@ -46,8 +54,8 @@ async function carregarPalavras() {
       li.innerHTML = `
         <strong>${p.termo}</strong> (${p.classe || "sem classe"})
         <br />
-        <button data-id="${p.id}" class="editar">✏️ Editar</button>
-        <button data-id="${p.id}" class="excluir">🗑️ Excluir</button>
+        <button data-id="${p.uuid}" class="editar">✏️ Editar</button>
+        <button data-id="${p.uuid}" class="excluir">🗑️ Excluir</button>
       `;
       lista.appendChild(li);
     });
@@ -62,7 +70,7 @@ async function carregarPalavras() {
 
   document.querySelectorAll('.excluir').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const id = Number(btn.dataset.id);
+      const id = btn.dataset.id; // não use Number() pois uuid é string
       if (confirm('Tem certeza que deseja excluir esta palavra?')) {
         await excluirPalavra(id);
         carregarPalavras();
@@ -110,3 +118,44 @@ function importarDados(arquivo) {
   reader.readAsText(arquivo);
 }
 
+// 📤 Exportar para MySQL
+async function exportarParaMySQL() {
+  const palavras = await listarPalavras(); // Pega as palavras do IndexedDB
+
+  const response = await fetch('/significados/backend/api/palavras.php?acao=importar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(palavras),
+  });
+
+  const text = await response.text();
+  try {
+    const resultado = JSON.parse(text);
+    if (resultado.status === 'success') {
+      alert('Palavras exportadas com sucesso!');
+    } else {
+      alert('Erro ao exportar palavras');
+      console.error(resultado);
+    }
+  } catch (e) {
+    console.error('Resposta inválida do servidor:', text);
+    alert('Erro: o servidor não retornou JSON válido.');
+  }
+}
+
+// 📥 Importar de MySQL para IndexedDB
+async function importarDoMySQL() {
+  const response = await fetch('/significados/backend/api/palavras.php');
+  const palavras = await response.json();
+
+  for (const palavra of palavras) {
+    await salvarPalavra(palavra);  // Salva no IndexedDB
+  }
+
+  carregarPalavras();  // Atualiza a lista de palavras na interface
+}
+
+window.exportarDados = exportarDados;
+window.importarDados = importarDados;
+window.exportarParaMySQL = exportarParaMySQL;
+window.importarDoMySQL = importarDoMySQL;

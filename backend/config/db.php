@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'significados';
+$db   = 'mlsfront_significados';
 $user = 'root';
 $pass = '';
 

@@ -29,9 +29,16 @@
     </section>
     
     <section id="backup">
+      <h2>Backup JSON</h2>
       <button type="button" onclick="exportarDados()">📤 Exportar</button>
       <label for="importar">📥 Importar</label>
       <input type="file" id="importar" style="display: none" />
+    </section>
+    
+    <section id="backup-mysql">
+      <h2>Sincronizar MySQL</h2>
+      <button type="button" onclick="exportarParaMySQL()">📤 ExportarMySql</button>
+      <button type="button" onclick="importarDoMySQL()">📤 ImportarMySql</button>
     </section>
 
     <section id="lista">
@@ -45,7 +52,7 @@
     <small>Projeto Significados © 2025</small>
   </footer>
 
-  <script src="js/db.js"></script>
-  <script src="js/app.js"></script>
+  <script type="module" src="js/db.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

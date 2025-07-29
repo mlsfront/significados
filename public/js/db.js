@@ -22,7 +22,7 @@ function abrirDB() {
       db = event.target.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         const store = db.createObjectStore(STORE_NAME, {
-          keyPath: 'id',
+          keyPath: 'uuid',
           autoIncrement: true
         });
         store.createIndex('termo', 'termo', { unique: false });
@@ -31,19 +31,24 @@ function abrirDB() {
   });
 }
 
-// 💾 Salva nova palavra (sem ID)
+// 💾 Salva palavra
+import { v4 as uuidv4 } from 'https://cdn.skypack.dev/uuid';
+
 async function salvarPalavra(palavra) {
   const db = await abrirDB();
-  return new Promise((resolve, reject) => {
-    // Se a palavra tem um 'id', excluímos ele (não queremos sobrescrever a chave autoincrementada)
-    const palavraComId = { ...palavra };
-    delete palavraComId.id;  // Garantimos que o 'id' não seja passado, já que é auto-incrementado.
 
+  const agora = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const palavraComDados = {
+    ...palavra,
+    uuid: palavra.uuid || uuidv4(),
+    updated_at: agora
+  };
+
+  return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
-    const request = store.add(palavraComId);
-
-    request.onsuccess = () => resolve(request.result); // retorna ID gerado
+    const request = store.put(palavraComDados); // `put` atualiza se já existir
+    request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject('Erro ao salvar palavra');
   });
 }
@@ -99,3 +104,12 @@ async function excluirPalavra(id) {
     request.onerror = () => reject('Erro ao excluir palavra');
   });
 }
+
+export {
+  abrirDB,
+  salvarPalavra,
+  listarPalavras,
+  buscarPalavraPorId,
+  atualizarPalavra,
+  excluirPalavra
+};
