@@ -1,5 +1,14 @@
 # Changelog — Significados
 
+## [0.7.0] - 2025-07-29
+
+### Adicionado
+- Função `sincronizarAgora()` que combina exportação e importação com feedback visual.
+- Registro de `last_sync_time` em `localStorage` para exibir o horário da última sincronização manual.
+- Interface atualizada com botão de "Sincronizar Agora" e status dinâmico.
+
+---
+
 ## [v0.6.0] - 2025-07-29
 
 ### Adicionado

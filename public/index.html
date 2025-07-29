@@ -33,6 +33,7 @@
       </section>
     </details>
     <section id="lista">
+      <p id="status-sincronizacao">Última sincronização: -</p>
       <h2>Palavras Cadastradas</h2>
       <input type="search" id="busca" placeholder="Buscar por termo..." />
       <ul id="lista-palavras"></ul>
@@ -98,6 +99,13 @@
       <h3>Sincronizar MySQL</h3>
       <button type="button" onclick="exportarParaMySQL()">📤 ExportarMySql</button>
       <button type="button" onclick="importarDoMySQL()">📤 ImportarMySql</button>
+    </div>
+    <hr>
+
+    <div class="section">
+      <h3>Sincronização Manual</h3>
+      <button onclick="sincronizarAgora()">🔁 Sincronizar Agora</button>
+      <p id="status-sincronizacao"></p>
     </div>
 
     <menu>

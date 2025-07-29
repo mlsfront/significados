@@ -16,6 +16,12 @@ import {
 } from './modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  const statusEl = document.getElementById('status-sincronizacao');
+  const ultima = localStorage.getItem('last_sync_time');
+  if (ultima && statusEl) {
+    statusEl.textContent = `Última sincronização: ${ultima}`;
+  }
+
   document.getElementById('importar').addEventListener('change', function () {
     importarDados(this.files[0]);
   });
@@ -192,6 +198,31 @@ async function limparPalavrasExcluidas() {
   });
 }
 
+// ✅ Função sincronizarAgora()
+function formatarHoraAtual() {
+  const agora = new Date();
+  return agora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+async function sincronizarAgora() {
+  const statusEl = document.getElementById('status-sincronizacao');
+  if (statusEl) statusEl.textContent = '🔄 Sincronizando...';
+
+  try {
+    await exportarParaMySQL();
+    await importarDoMySQL();
+
+    const hora = formatarHoraAtual();
+    localStorage.setItem('last_sync_time', hora);
+    if (statusEl) statusEl.textContent = `✅ Sincronizado às ${hora}`;
+  } catch (erro) {
+    console.error('Erro na sincronização:', erro);
+    if (statusEl) statusEl.textContent = '❌ Erro na sincronização';
+  }
+
+  carregarPalavras();
+}
+
 // 🌐 Disponibiliza no escopo global
 window.exportarDados = exportarDados;
 window.importarDados = importarDados;
@@ -201,5 +232,6 @@ window.abrirModal = abrirModal;
 window.fecharModal = fecharModal;
 window.salvarConfiguracoes = salvarConfiguracoes;
 window.limparPalavrasExcluidas = limparPalavrasExcluidas;
+window.sincronizarAgora = sincronizarAgora;
 
 export { carregarPalavras };
