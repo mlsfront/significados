@@ -1,5 +1,16 @@
 # Changelog — Significados
 
+## \[0.8.0] - 2025-07-29
+### Adicionado
+- Endpoint `historico.php` para exibir o histórico de alterações de uma palavra via UUID.
+- Decodificação automática dos campos `dados_anteriores` e `dados_novos` no retorno JSON.
+- Validação básica de parâmetros no backend para garantir integridade da consulta.
+
+### Melhorias
+- Estrutura padronizada de resposta em erros (`status`, `message`, `error`).
+
+---
+
 ## \[v0.7.1] - 2025-07-29
 
 ### Adicionado

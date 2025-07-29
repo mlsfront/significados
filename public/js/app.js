@@ -15,6 +15,8 @@ import {
   salvarConfiguracoes
 } from './modal.js';
 
+import { mostrarHistorico } from './historico.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const statusEl = document.getElementById('status-sincronizacao');
   const ultima = localStorage.getItem('last_sync_time');
@@ -71,6 +73,7 @@ async function carregarPalavras() {
         <button data-id="${p.uuid}" class="editar">✏️ Editar</button>
         <button data-id="${p.uuid}" class="excluir">🗑️ Excluir</button>
       `;
+      li.innerHTML += `<button data-id="${p.uuid}" class="historico">📜 Histórico</button>`;
       lista.appendChild(li);
     });
 
@@ -101,6 +104,13 @@ async function carregarPalavras() {
           carregarPalavras();
         }
       }
+    });
+  });
+
+  document.querySelectorAll('.historico').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      mostrarHistorico(id);
     });
   });
 }

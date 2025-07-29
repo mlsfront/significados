@@ -50,3 +50,6 @@ dialog menu button:hover {
   display: block;
   margin-bottom: 10px;
 }
+#modal-historico button {
+  margin-left: 14px;
+}

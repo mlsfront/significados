@@ -28,6 +28,7 @@
           <textarea name="conotacoes" placeholder="Significados conotativos (opcional)"></textarea>
           <input type="text" name="registro" placeholder="Registro de uso" />
           <input type="text" name="traducao" placeholder="Tradução" />
+          <input type="text" name="etimologia" placeholder="Etimologia" />
           <button type="submit">Salvar</button>
         </form>
       </section>
@@ -113,6 +114,15 @@
       <button onclick="salvarConfiguracoes()">Salvar</button>
       <button onclick="fecharModal('modal-config')">Cancelar</button>
     </menu>
+  </dialog>
+
+  <!-- Modal Histórico -->
+  <dialog id="modal-historico" class="modal">
+    <header>
+      <h2>Histórico de Alterações</h2>
+      <button onclick="fecharModal('modal-historico')">✖</button>
+    </header>
+    <section id="modal-historico-conteudo" style="max-height:400px; overflow:auto;"></section>
   </dialog>
 
   <!-- Scripts -->

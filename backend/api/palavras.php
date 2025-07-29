@@ -92,6 +92,14 @@ function importarPalavras($palavras) {
             ]);
         }
 
+        // Buscar registro antigo (se existir)
+        $stmtOld = $pdo->prepare("SELECT * FROM palavras WHERE uuid = :uuid");
+        $stmtOld->execute([':uuid' => $p['uuid']]);
+        $antigo = $stmtOld->fetch(PDO::FETCH_ASSOC);
+
+        $acao = $antigo ? 'atualizado' : 'criado';
+        registrarHistorico($p['uuid'], $acao, $antigo, $p, $usuarioAtual ?? null);
+
         $pdo->commit();
         return ['status' => 'success', 'message' => 'Sincronização concluída com sucesso'];
 
@@ -127,3 +135,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $acao === 'importar') {
 // Rota inválida
 http_response_code(400);
 echo json_encode(['status' => 'error', 'message' => 'Rota ou método inválido']);
+
+function registrarHistorico($palavraUuid, $acao, $dadosAnteriores = null, $dadosNovos = null, $usuario = null) {
+    global $pdo;
+    $sql = "INSERT INTO historico_palavras (palavra_uuid, data_alteracao, usuario, acao, dados_anteriores, dados_novos)
+            VALUES (:palavra_uuid, NOW(), :usuario, :acao, :dados_anteriores, :dados_novos)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':palavra_uuid' => $palavraUuid,
+        ':usuario' => $usuario,
+        ':acao' => $acao,
+        ':dados_anteriores' => $dadosAnteriores ? json_encode($dadosAnteriores) : null,
+        ':dados_novos' => $dadosNovos ? json_encode($dadosNovos) : null,
+    ]);
+}
