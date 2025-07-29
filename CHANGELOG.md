@@ -1,5 +1,26 @@
 # Changelog — Significados
 
+## [v0.3.0] — 2025-07-29
+
+### Adicionado
+
+- **Correção do fluxo de salvamento de palavras**:
+  - Ajuste na função `salvarPalavra` para garantir a autogeração de `id` pelo IndexedDB.
+  - Garantia de que o campo `id` não seja passado ao IndexedDB, evitando erros ao salvar.
+  
+- **Melhoria na importação de dados**:
+  - Função de importação agora limpa corretamente o campo `id` dos dados ao importar para evitar conflitos com a chave autoincrementada.
+  
+- **Refatoração de `db.js`**:
+  - Função `salvarPalavra` agora trata a remoção do campo `id` antes de adicionar ao IndexedDB, para garantir a integridade do banco de dados.
+  - Melhor tratamento de erros para funções que manipulam dados no IndexedDB.
+  
+### Corrigido
+
+- **Erro ao salvar palavra**: Erro de `DataError` devido ao uso incorreto de `id` ao tentar salvar palavras no IndexedDB.
+
+---
+
 ## [v0.2.0] — 2025-07-29
 
 ### Adicionado
