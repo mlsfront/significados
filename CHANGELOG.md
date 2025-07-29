@@ -1,6 +1,17 @@
 # Changelog — Significados
 
-## [0.7.0] - 2025-07-29
+## \[v0.7.1] - 2025-07-29
+
+### Adicionado
+- Suporte completo à nova coluna `etimologia`:
+  - Atualizações no formulário HTML de criação e edição.
+  - Exibição da etimologia no modal de visualização.
+  - Suporte no IndexedDB (`db.js`) e exportações/importações.
+  - Sincronização bidirecional com backend PHP e MySQL.
+
+---
+
+## \[0.7.0] - 2025-07-29
 
 ### Adicionado
 - Função `sincronizarAgora()` que combina exportação e importação com feedback visual.
@@ -9,7 +20,7 @@
 
 ---
 
-## [v0.6.0] - 2025-07-29
+## \[v0.6.0] - 2025-07-29
 
 ### Adicionado
 - Implementada exclusão lógica de palavras no IndexedDB, marcando como `deleted: true` para evitar remoção imediata e garantir sincronização segura.

@@ -42,7 +42,8 @@ async function salvarPalavra(palavra) {
     ...palavra,
     uuid: palavra.uuid || uuidv4(),
     deleted: palavra.deleted ?? false,
-    updated_at: agora
+    updated_at: agora,
+    etimologia: palavra.etimologia || null
   };
 
 

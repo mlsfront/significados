@@ -16,10 +16,11 @@ export function fecharModal(id) {
 
 // Preenche e abre o modal de edição/criação de palavra
 export function preencherModalCrud(palavra = {}) {
+
   const form = document.getElementById('form-modal-palavra');
   form.reset(); // limpa campos
 
-  const campos = ['termo', 'classe', 'denotativo', 'conotacoes', 'registro', 'traducao'];
+  const campos = ['termo', 'classe', 'denotativo', 'conotacoes', 'registro', 'traducao', 'etimologia'];
   for (const campo of campos) {
     form.elements[campo].value = palavra[campo] || '';
   }
@@ -40,6 +41,7 @@ export function visualizarPalavra(palavra) {
     <p><strong>Conotações:</strong> ${palavra.conotacoes || '-'}</p>
     <p><strong>Registro:</strong> ${palavra.registro || '-'}</p>
     <p><strong>Tradução:</strong> ${palavra.traducao || '-'}</p>
+    <p><strong>Etimologia:</strong> ${palavra.etimologia || '-'}</p>
   `;
 
   abrirModal('modal-visualizar');
