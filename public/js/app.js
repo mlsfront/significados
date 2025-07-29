@@ -5,6 +5,14 @@ import {
   atualizarPalavra,
   excluirPalavra
 } from './db.js'; // ajuste caminho se necessário
+import {
+  abrirModal,
+  fecharModal,
+  visualizarPalavra,
+  preencherModalCrud,
+  salvarConfiguracoes
+} from './modal.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('importar').addEventListener('change', function () {
@@ -54,39 +62,38 @@ async function carregarPalavras() {
       li.innerHTML = `
         <strong>${p.termo}</strong> (${p.classe || "sem classe"})
         <br />
+        <button data-id="${p.uuid}" class="visualizar">👁️ Ver</button>
         <button data-id="${p.uuid}" class="editar">✏️ Editar</button>
         <button data-id="${p.uuid}" class="excluir">🗑️ Excluir</button>
       `;
       lista.appendChild(li);
     });
 
+  document.querySelectorAll('.visualizar').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = btn.dataset.id;
+      const palavra = await buscarPalavraPorId(id);
+      visualizarPalavra(palavra);
+    });
+  });
+
   document.querySelectorAll('.editar').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const id = Number(btn.dataset.id);
+      const id = btn.dataset.id;
       const palavra = await buscarPalavraPorId(id);
-      preencherFormulario(palavra);
+      preencherModalCrud(palavra); // usa modal para edição
     });
   });
 
   document.querySelectorAll('.excluir').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const id = btn.dataset.id; // não use Number() pois uuid é string
+      const id = btn.dataset.id; // uuid é string
       if (confirm('Tem certeza que deseja excluir esta palavra?')) {
         await excluirPalavra(id);
         carregarPalavras();
       }
     });
   });
-
-  function preencherFormulario(palavra) {
-    form.termo.value = palavra.termo;
-    form.classe.value = palavra.classe;
-    form.denotativo.value = palavra.denotativo;
-    form.conotacoes.value = palavra.conotacoes;
-    form.registro.value = palavra.registro;
-    form.traducao.value = palavra.traducao;
-    palavraEditandoId = palavra.id;
-  }
 }
 
 // 📤 Exportar
@@ -159,3 +166,7 @@ window.exportarDados = exportarDados;
 window.importarDados = importarDados;
 window.exportarParaMySQL = exportarParaMySQL;
 window.importarDoMySQL = importarDoMySQL;
+window.abrirModal = abrirModal;
+window.fecharModal = fecharModal;
+window.salvarConfiguracoes = salvarConfiguracoes;
+export { carregarPalavras };

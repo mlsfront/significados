@@ -1,5 +1,41 @@
 # Changelog — Significados
 
+## \[v0.5.0] - 2025-07-29
+
+### ✨ Novidades
+
+- Adicionada **modal CRUD** para editar/criar palavras de forma mais clara e isolada da interface principal.
+- Criada **modal de visualização** com todos os campos da palavra, acessível via botão "👁️ Ver".
+- Implementada **modal de configurações** com opções de:
+  - Sincronização automática com MySQL
+  - Ordenação A-Z, Z-A ou por data
+- Botão de acesso rápido à modal de configurações diretamente no header.
+
+### ✅ Funcionalidades
+
+- Reorganização da interface com `<details>` para cadastro simplificado.
+- Campos do formulário de cadastro e edição são reaproveitados.
+- Implementada edição por modal com `uuid` como identificador persistente.
+- Modal CRUD carrega e salva dados corretamente via IndexedDB.
+- Modal "Ver" mostra todos os campos da palavra de forma limpa.
+- Backup e importação/exportação funcionando com JSON e MySQL.
+- Importação agora trata duplicações ao remover `id`.
+
+### 🐞 Correções e melhorias internas
+
+- Refatorado `app.js` para separar melhor as responsabilidades de visualização, edição e exclusão.
+- `modal.js` agora centraliza abertura/fechamento de modais e manipulação do conteúdo de cada tipo.
+- Adicionados botões de ação nas listas com escuta dinâmica de eventos.
+- Melhor feedback no console para falhas de modal ou exportação.
+
+### 🧪 Limitações conhecidas
+
+- **Exclusões feitas no IndexedDB não são sincronizadas com o MySQL.**
+  - Será tratado na próxima versão (`v0.6.0`).
+- Ainda há uso de `alert()` para feedback de exportação, sem UX visual refinada.
+
+---
+
 ## \[v0.4.0] — 2025-07-29
 
 ### Adicionado
