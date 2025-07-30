@@ -18,22 +18,25 @@ import {
 import { mostrarHistorico } from './historico.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializa configurações ao iniciar
-  const syncAuto = localStorage.getItem('config_sync') === '1';
-  const ordenacao = localStorage.getItem('config_ordenacao') || 'az';
+  const syncAutoEl = document.getElementById('sync-automatica');
+  const ordenacaoEl = document.getElementById('ordenacao');
 
-  document.getElementById('sync-automatica').checked = syncAuto;
-  document.getElementById('ordenacao').value = ordenacao;
+  if (syncAutoEl && ordenacaoEl) {
+    const syncAuto = localStorage.getItem('config_sync') === '1';
+    const ordenacao = localStorage.getItem('config_ordenacao') || 'az';
 
-  if (syncAuto && typeof sincronizarAgora === 'function') {
-    const lastSync = parseInt(localStorage.getItem('last_sync_timestamp'), 10);
-    const agora = Date.now();
+    syncAutoEl.checked = syncAuto;
+    ordenacaoEl.value = ordenacao;
 
-    // Só sincroniza se passou mais de 5 minutos (300000 ms)
-    if (!lastSync || agora - lastSync > 300000) {
-      sincronizarAgora();
-    } else {
-      console.log('⏳ Sincronização recente, ignorando por enquanto.');
+    if (syncAuto && typeof sincronizarAgora === 'function') {
+      const lastSync = parseInt(localStorage.getItem('last_sync_timestamp'), 10);
+      const agora = Date.now();
+
+      if (!lastSync || agora - lastSync > 300000) {
+        sincronizarAgora();
+      } else {
+        console.log('⏳ Sincronização recente, ignorando por enquanto.');
+      }
     }
   }
 
@@ -43,39 +46,45 @@ document.addEventListener('DOMContentLoaded', () => {
     statusEl.textContent = `Última sincronização: ${ultima}`;
   }
 
-  document.getElementById('importar').addEventListener('change', function () {
-    importarDados(this.files[0]);
-  });
+  const importarEl = document.getElementById('importar');
+  if (importarEl) {
+    importarEl.addEventListener('change', function () {
+      importarDados(this.files[0]);
+    });
+  }
 
   const form = document.getElementById('form-palavra');
   const busca = document.getElementById('busca');
-  let palavraEditandoId = null;
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const dados = Object.fromEntries(new FormData(form));
-    dados.id = palavraEditandoId || undefined;
+  if (form && busca) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const dados = Object.fromEntries(new FormData(form));
+      dados.id = palavraEditandoId || undefined;
 
-    if (palavraEditandoId) {
-      await atualizarPalavra(dados);
-      palavraEditandoId = null;
-    } else {
-      await salvarPalavra(dados);
-    }
+      if (palavraEditandoId) {
+        await atualizarPalavra(dados);
+        palavraEditandoId = null;
+      } else {
+        await salvarPalavra(dados);
+      }
 
-    form.reset();
-    carregarPalavras();
-  });
+      form.reset();
+      carregarPalavras();
+    });
 
-  busca.addEventListener('input', carregarPalavras);
+    busca.addEventListener('input', carregarPalavras);
+  }
 
   carregarPalavras();
 });
 
-// 🔄 Atualiza a lista de palavras na interface
 async function carregarPalavras() {
   const busca = document.getElementById('busca');
   const lista = document.getElementById('lista-palavras');
+
+  if (!lista || !busca) return;
+
   const termoBusca = busca.value.toLowerCase();
   let palavras = await listarPalavras();
 

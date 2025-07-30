@@ -4,7 +4,8 @@
 
 ## 🚀 Funcionalidades
 
-- Cadastro e busca de palavras
+- Cadastro, edição e busca de palavras (página administrativa)
+- Listagem pública e visualização de palavras (página pública)
 - Armazenamento local com IndexedDB (offline)
 - Sincronização com banco de dados MySQL (remoto)
 - Interface responsiva
@@ -20,7 +21,13 @@
 
 ## 📦 Estrutura do Projeto
 
-Veja a estrutura de pastas em `/public`, `/backend`, `/database`, etc.
+- `/public` — arquivos front-end, contendo duas páginas principais:
+  - **`adm.htm`** — página administrativa com todas as funcionalidades completas (cadastro, edição, configurações, sincronização etc.). Usa o script `js/app.js`.
+  - **`index.htm`** — página pública com listagem e botão para visualizar o conteúdo das palavras, sem possibilidade de editar ou alterar. Usa o script `js/app-public.js`.
+- `/backend` — API e scripts PHP para comunicação com o banco MySQL.
+- `/database` — scripts para criar e configurar o banco MySQL.
+- `/js` — scripts JavaScript do projeto (db.js, modal.js, app.js, app-public.js, etc.)
+- `/css` — folhas de estilo
 
 ## 📲 Instalação (desenvolvimento local)
 
@@ -29,9 +36,17 @@ git clone https://github.com/seu-usuario/significados.git
 cd significados
 ```
 
-1. Coloque os arquivos do `public/` em um servidor local (ex: XAMPP, Live Server).
+1. Coloque os arquivos do diretório `public/` em um servidor local (ex: XAMPP, Live Server).
 2. Configure o banco de dados MySQL com o arquivo `database/schema.sql`.
 3. Ajuste as credenciais do MySQL em `backend/config/db.php`.
+4. Acesse:
+   - `adm.htm` para a administração e gerência de dados.
+   - `index.htm` para acesso público somente à lista e visualização.
+
+## 🛠 Uso
+
+- **Página administrativa (`adm.htm`)**: permite o cadastro, edição, exclusão, backup, sincronização e configurações. Requer login ou controle de acesso via servidor (não incluso).
+- **Página pública (`index.htm`)**: lista as palavras disponíveis e permite visualizar suas informações sem risco de alterar dados, ideal para compartilhamento público.
 
 ## 📱 Gerar APK
 

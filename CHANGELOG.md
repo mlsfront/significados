@@ -1,5 +1,23 @@
 # Changelog — Significados
 
+## \[v0.9.0] - 2025-07-30
+
+### Adicionado
+- Separação das páginas em `index.htm` para listagem pública e `adm.htm` para administração completa.
+- Implementação do script `app-public.js` para listagem e visualização sem edição.
+- Modal de visualização aprimorada para não mostrar botões de edição/exclusão na página pública.
+
+### Corrigido
+- Prevenção de erros quando elementos do DOM não existem, com verificações condicionais ao acessar elementos.
+- Melhor experiência do usuário ao não mostrar campos vazios no modal de visualização (novo comportamento implementado).
+
+### Melhorias
+- Ajustes para evitar erros ao carregar listas e configurar modais.
+- Implementação da função para não apresentar campos vazios no modal de visualização para melhorar UX.
+- Atualização do README com instruções para uso das duas páginas (pública e admin).
+
+---
+
 ## \[v0.8.2] - 30-07-2025
 
 ### Adicionado
