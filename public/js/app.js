@@ -100,10 +100,13 @@ async function carregarPalavras() {
         <strong>${p.termo}</strong> (${p.classe || "sem classe"})
         <br />
         <button data-id="${p.uuid}" class="visualizar">👁️ Ver</button>
-        <button data-id="${p.uuid}" class="editar">✏️ Editar</button>
-        <button data-id="${p.uuid}" class="excluir">🗑️ Excluir</button>
+        <details>
+        <summary class="summary-acoes">Ações</summary>
+          <button data-id="${p.uuid}" class="editar">✏️ Editar</button>
+          <button data-id="${p.uuid}" class="excluir">🗑️ Excluir</button>
+          <button data-id="${p.uuid}" class="historico">📜 Histórico</button>
+        </details>
       `;
-      li.innerHTML += `<button data-id="${p.uuid}" class="historico">📜 Histórico</button>`;
       lista.appendChild(li);
     });
 

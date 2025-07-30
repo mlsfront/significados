@@ -13,7 +13,7 @@
   <header>
     <img src="assets/logo.png" alt="Logo" />
     <h1>Significados</h1>
-    <button onclick="abrirModal('modal-config')" style="margin-left:auto;">⚙️ Config</button>
+    <button onclick="abrirModal('modal-config')" class="btn-config"><span>⚙️</span> Config</button>
   </header>
 
   <main>
@@ -110,10 +110,11 @@
       <button onclick="sincronizarAgora()">🔁 Sincronizar Agora</button>
       <p id="status-sincronizacao"></p>
     </div>
+    <hr>
 
     <menu>
-      <button onclick="salvarConfiguracoes()">Salvar</button>
-      <button onclick="fecharModal('modal-config')">Cancelar</button>
+      <button class="btn-laranja" onclick="salvarConfiguracoes()">Salvar</button>
+      <button class="btn-laranja" onclick="fecharModal('modal-config')">Cancelar</button>
     </menu>
   </dialog>
 

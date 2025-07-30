@@ -32,13 +32,14 @@ dialog menu button {
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
-  background: #333;
+  background: var(--laranja-medio);
   color: white;
   cursor: pointer;
 }
 
 dialog menu button:hover {
-  background: #555;
+  background: var(--laranja);
+  color: #232526;
 }
 
 #visualizar-conteudo p {

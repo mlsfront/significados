@@ -1,5 +1,14 @@
 # Changelog — Significados
 
+## \[v0.8.2] - 30-07-2025
+
+### Adicionado
+- Componentes  para agrupar os botões de ação, afinando a interface.
+- Estilos personalizados para os botões de ação com cores específicas para melhor usabilidade.
+- Suporte a responsividade para diferentes tamanhos de tela (mobile e tablet).
+
+---
+
 ## \[0.8.1] - 2025-07-29
 ### Funcionalidades
 - Adicionada exibição do histórico de alterações por palavra via botão 📜.
