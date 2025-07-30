@@ -1,5 +1,14 @@
 # Changelog — Significados
 
+## \[v0.9.1] - 2025-07-30
+
+### Melhorias
+- Modal de visualização agora oculta campos vazios ou em branco para melhorar a experiência do usuário.
+- Mensagem padrão exibida no modal caso não existam informações adicionais além do termo.
+- Garantia de exibição do termo mesmo que esteja ausente no dado da palavra.
+
+---
+
 ## \[v0.9.0] - 2025-07-30
 
 ### Adicionado

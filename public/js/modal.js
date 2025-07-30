@@ -34,14 +34,27 @@ export function preencherModalCrud(palavra = {}) {
 // Exibe dados da palavra no modal de visualização
 export function visualizarPalavra(palavra) {
   const div = document.getElementById('visualizar-conteudo');
+  if (!palavra || !div) return;
+
+  // Campos com label
+  const campos = [
+    { label: 'Classe', valor: palavra.classe },
+    { label: 'Denotativo', valor: palavra.denotativo },
+    { label: 'Conotações', valor: palavra.conotacoes },
+    { label: 'Registro', valor: palavra.registro },
+    { label: 'Tradução', valor: palavra.traducao },
+    { label: 'Etimologia', valor: palavra.etimologia }
+  ];
+
+  // Somente campos com valor não vazio
+  const conteudoCampos = campos
+    .filter(c => c.valor && c.valor.trim() !== '')
+    .map(c => `<p><strong>${c.label}:</strong> ${c.valor}</p>`)
+    .join('\n');
+
   div.innerHTML = `
-    <strong>${palavra.termo}</strong>
-    <p><strong>Classe:</strong> ${palavra.classe || '-'}</p>
-    <p><strong>Denotativo:</strong> ${palavra.denotativo || '-'}</p>
-    <p><strong>Conotações:</strong> ${palavra.conotacoes || '-'}</p>
-    <p><strong>Registro:</strong> ${palavra.registro || '-'}</p>
-    <p><strong>Tradução:</strong> ${palavra.traducao || '-'}</p>
-    <p><strong>Etimologia:</strong> ${palavra.etimologia || '-'}</p>
+    <strong>${palavra.termo || '(sem termo)'}</strong>
+    ${conteudoCampos || '<p><em>Sem informações adicionais.</em></p>'}
   `;
 
   abrirModal('modal-visualizar');
