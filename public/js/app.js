@@ -18,6 +18,25 @@ import {
 import { mostrarHistorico } from './historico.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializa configurações ao iniciar
+  const syncAuto = localStorage.getItem('config_sync') === '1';
+  const ordenacao = localStorage.getItem('config_ordenacao') || 'az';
+
+  document.getElementById('sync-automatica').checked = syncAuto;
+  document.getElementById('ordenacao').value = ordenacao;
+
+  if (syncAuto && typeof sincronizarAgora === 'function') {
+    const lastSync = parseInt(localStorage.getItem('last_sync_timestamp'), 10);
+    const agora = Date.now();
+
+    // Só sincroniza se passou mais de 5 minutos (300000 ms)
+    if (!lastSync || agora - lastSync > 300000) {
+      sincronizarAgora();
+    } else {
+      console.log('⏳ Sincronização recente, ignorando por enquanto.');
+    }
+  }
+
   const statusEl = document.getElementById('status-sincronizacao');
   const ultima = localStorage.getItem('last_sync_time');
   if (ultima && statusEl) {
@@ -58,7 +77,18 @@ async function carregarPalavras() {
   const busca = document.getElementById('busca');
   const lista = document.getElementById('lista-palavras');
   const termoBusca = busca.value.toLowerCase();
-  const palavras = await listarPalavras();
+  let palavras = await listarPalavras();
+
+  // ✅ Corrigir escopo da ordenação
+  const ordenacao = localStorage.getItem('config_ordenacao') || 'az';
+
+  if (ordenacao === 'az') {
+    palavras.sort((a, b) => a.termo.localeCompare(b.termo));
+  } else if (ordenacao === 'za') {
+    palavras.sort((a, b) => b.termo.localeCompare(a.termo));
+  } else if (ordenacao === 'recentes') {
+    palavras.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+  }
 
   lista.innerHTML = '';
 
@@ -224,6 +254,8 @@ async function sincronizarAgora() {
 
     const hora = formatarHoraAtual();
     localStorage.setItem('last_sync_time', hora);
+    localStorage.setItem('last_sync_timestamp', Date.now().toString());
+
     if (statusEl) statusEl.textContent = `✅ Sincronizado às ${hora}`;
   } catch (erro) {
     console.error('Erro na sincronização:', erro);
@@ -243,5 +275,4 @@ window.fecharModal = fecharModal;
 window.salvarConfiguracoes = salvarConfiguracoes;
 window.limparPalavrasExcluidas = limparPalavrasExcluidas;
 window.sincronizarAgora = sincronizarAgora;
-
 export { carregarPalavras };

@@ -1,5 +1,26 @@
 # Changelog — Significados
 
+## \[0.8.1] - 2025-07-29
+### Funcionalidades
+- Adicionada exibição do histórico de alterações por palavra via botão 📜.
+- Implementado suporte à nova coluna `etimologia` no banco de dados, IndexedDB e interface.
+
+### Melhorias
+- Implementada ordenação configurável na interface:
+  - `A-Z`, `Z-A` e `Recentes` com base em `updated_at`.
+  - Preferência de ordenação é salva no `localStorage` e aplicada automaticamente ao iniciar.
+- Sincronização automática com MySQL:
+  - Agora só é executada se a última sincronização foi há mais de 5 minutos.
+  - `last_sync_time` (para exibição) e `last_sync_timestamp` (para controle interno) são armazenados.
+  - Mensagens de status mais claras: "🔄 Sincronizando...", "✅ Sincronizado às ...", "❌ Erro...".
+
+### Refatorações
+- Separação entre controle e exibição no mecanismo de sincronização.
+- Função `carregarPalavras()` agora aplica ordenação antes de filtrar por busca.
+- Código da tela principal reorganizado para refletir as configurações salvas.
+
+---
+
 ## \[0.8.0] - 2025-07-29
 ### Adicionado
 - Endpoint `historico.php` para exibir o histórico de alterações de uma palavra via UUID.

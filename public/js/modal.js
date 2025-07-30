@@ -56,6 +56,12 @@ export function salvarConfiguracoes() {
   localStorage.setItem('config_ordenacao', ordenacao || 'az');
 
   fecharModal('modal-config');
+
+  // Reaplica estados imediatamente:
+  carregarPalavras();
+  if (syncAuto && typeof sincronizarAgora === 'function') {
+    sincronizarAgora();
+  }
 }
 
 import { atualizarPalavra, salvarPalavra } from './db.js';
