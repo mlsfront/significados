@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Significados - Administração</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="icon" href="assets/favicon.ico" />
+</head>
+<body>
+  <header>
+    <img src="assets/logo.png" alt="Logo" />
+    <h1>Significados</h1>
+    <button onclick="abrirModal('modal-config')" class="btn-config"><span>⚙️</span> Config</button>
+  </header>
+
+  <main>
+    <details class="form">
+      <summary>ADICIONAR</summary>
+      <section id="cadastro">
+        <h2>Nova Palavra</h2>
+        <form id="form-palavra">
+          <input type="text" name="termo" placeholder="Palavra" required />
+          <input type="text" name="classe" placeholder="Classe gramatical" />
+          <textarea name="denotativo" placeholder="Significado denotativo"></textarea>
+          <textarea name="conotacoes" placeholder="Significados conotativos (opcional)"></textarea>
+          <input type="text" name="registro" placeholder="Registro de uso" />
+          <input type="text" name="traducao" placeholder="Tradução" />
+          <input type="text" name="etimologia" placeholder="Etimologia" />
+          <button type="submit">Salvar</button>
+          <button type="button" onclick="location.reload();">Cancelar</button>
+        </form>
+      </section>
+    </details>
+    <section id="lista">
+      <p id="status-sincronizacao">Última sincronização: -</p>
+      <h2>Palavras Cadastradas</h2>
+      <input type="search" id="busca" placeholder="Buscar por termo..." />
+      <ul id="lista-palavras"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <small>Projeto Significados © 2025</small>
+  </footer>
+
+  <!-- Modais -->
+
+  <!-- Modal CRUD -->
+  <dialog id="modal-crud">
+    <form method="dialog" id="form-modal-palavra">
+      <h3>Editar Palavra</h3>
+      <input type="text" name="termo" placeholder="Palavra" required />
+      <input type="text" name="classe" placeholder="Classe gramatical" />
+      <textarea name="denotativo" placeholder="Significado denotativo"></textarea>
+      <textarea name="conotacoes" placeholder="Significados conotativos (opcional)"></textarea>
+      <input type="text" name="registro" placeholder="Registro de uso" />
+      <input type="text" name="traducao" placeholder="Tradução" />
+      <textarea name="etimologia" placeholder="Etimologia (opcional)"></textarea>
+      <menu>
+        <button type="submit">Salvar</button>
+        <button type="button" onclick="fecharModal('modal-crud')">Cancelar</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <!-- Modal Visualizar -->
+  <dialog id="modal-visualizar">
+    <div id="visualizar-conteudo"></div>
+    <menu>
+      <button onclick="fecharModal('modal-visualizar')">Fechar</button>
+    </menu>
+  </dialog>
+
+  <!-- Modal Configurações -->
+  <dialog id="modal-config">
+    <h3>Configurações</h3>
+    <label>
+      <input type="checkbox" id="sync-automatica" />
+      Sincronização automática com MySQL
+    </label>
+    <label>
+      <select id="ordenacao">
+        <option value="az">Ordenar A-Z</option>
+        <option value="za">Ordenar Z-A</option>
+        <option value="recentes">Mais recentes</option>
+      </select>
+    </label>
+    <hr>
+    
+    <div class="section" id="backup">
+      <h3>Backup JSON</h3>
+      <button type="button" onclick="exportarDados()">📤 Exportar</button>
+      <label for="importar">📥 Importar</label>
+      <input type="file" id="importar" style="display: none" />
+    </div>
+    <hr>
+    
+    <div class="section" id="backup-mysql">
+      <h3>Sincronizar MySQL</h3>
+      <button type="button" onclick="exportarParaMySQL()">📤 ExportarMySql</button>
+      <button type="button" onclick="importarDoMySQL()">📤 ImportarMySql</button>
+    </div>
+    <hr>
+
+    <div class="section">
+      <h3>Sincronização Manual</h3>
+      <button onclick="sincronizarAgora()">🔁 Sincronizar Agora</button>
+      <p id="status-sincronizacao"></p>
+    </div>
+    <hr>
+
+    <menu>
+      <button class="btn-laranja" onclick="salvarConfiguracoes()">Salvar</button>
+      <button class="btn-laranja" onclick="fecharModal('modal-config')">Cancelar</button>
+    </menu>
+  </dialog>
+
+  <!-- Modal Histórico -->
+  <dialog id="modal-historico" class="modal">
+    <header>
+      <h2>Histórico de Alterações</h2>
+      <button onclick="fecharModal('modal-historico')">✖</button>
+    </header>
+    <section id="modal-historico-conteudo" style="max-height:400px; overflow:auto;"></section>
+  </dialog>
+
+  <!-- Scripts -->
+  <script type="module" src="js/db.js"></script>
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/modal.js"></script>
+</body>
+</html>

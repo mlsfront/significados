@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Significados</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="icon" href="assets/favicon.ico" />
+</head>
+<body>
+  <header>
+    <img src="assets/logo.png" alt="Logo" />
+    <h1>Significados</h1>
+  </header>
+
+  <main>
+    <section id="lista">
+      <h2>Palavras Cadastradas</h2>
+      <input type="search" id="busca" placeholder="Buscar por termo..." />
+      <ul id="lista-palavras"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <small>Projeto Significados © 2025</small>
+  </footer>
+
+  <!-- Modal Visualizar -->
+  <dialog id="modal-visualizar">
+    <div id="visualizar-conteudo"></div>
+    <menu>
+      <button onclick="fecharModal('modal-visualizar')">Fechar</button>
+    </menu>
+  </dialog>
+
+  <!-- Scripts -->
+  <script type="module" src="js/db.js"></script>
+  <script type="module" src="js/modal.js"></script>
+  <script type="module" src="js/app-public.js"></script>
+</body>
+</html>
