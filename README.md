@@ -25,7 +25,7 @@ Veja a estrutura de pastas em `/public`, `/backend`, `/database`, etc.
 ## 📲 Instalação (desenvolvimento local)
 
 ```bash
-git clone https://github.com/seu-usuario/significados.git
+git clone https://github.com/mlsfront/significados.git
 cd significados
 ```
 
