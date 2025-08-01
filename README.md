@@ -22,8 +22,8 @@
 ## 📦 Estrutura do Projeto
 
 - `/public` — arquivos front-end, contendo duas páginas principais:
-  - **`adm.htm`** — página administrativa com todas as funcionalidades completas (cadastro, edição, configurações, sincronização etc.). Usa o script `js/app.js`.
-  - **`index.htm`** — página pública com listagem e botão para visualizar o conteúdo das palavras, sem possibilidade de editar ou alterar. Usa o script `js/app-public.js`.
+  - **`adm.html`** — página administrativa com todas as funcionalidades completas (cadastro, edição, configurações, sincronização etc.). Usa o script `js/app.js`.
+  - **`index.html`** — página pública com listagem e botão para visualizar o conteúdo das palavras, sem possibilidade de editar ou alterar. Usa o script `js/app-public.js`.
 - `/backend` — API e scripts PHP para comunicação com o banco MySQL.
 - `/database` — scripts para criar e configurar o banco MySQL.
 - `/js` — scripts JavaScript do projeto (db.js, modal.js, app.js, app-public.js, etc.)
@@ -32,7 +32,7 @@
 ## 📲 Instalação (desenvolvimento local)
 
 ```bash
-git clone https://github.com/seu-usuario/significados.git
+git clone https://github.com/mlsfront/significados.git
 cd significados
 ```
 
@@ -40,13 +40,13 @@ cd significados
 2. Configure o banco de dados MySQL com o arquivo `database/schema.sql`.
 3. Ajuste as credenciais do MySQL em `backend/config/db.php`.
 4. Acesse:
-   - `adm.htm` para a administração e gerência de dados.
-   - `index.htm` para acesso público somente à lista e visualização.
+   - `adm.html` para a administração e gerência de dados.
+   - `index.html` para acesso público somente à lista e visualização.
 
 ## 🛠 Uso
 
-- **Página administrativa (`adm.htm`)**: permite o cadastro, edição, exclusão, backup, sincronização e configurações. Requer login ou controle de acesso via servidor (não incluso).
-- **Página pública (`index.htm`)**: lista as palavras disponíveis e permite visualizar suas informações sem risco de alterar dados, ideal para compartilhamento público.
+- **Página administrativa (`adm.html`)**: permite o cadastro, edição, exclusão, backup, sincronização e configurações. Requer login ou controle de acesso via servidor (não incluso).
+- **Página pública (`index.html`)**: lista as palavras disponíveis e permite visualizar suas informações sem risco de alterar dados, ideal para compartilhamento público.
 
 ## 📱 Gerar APK
 
