@@ -18,6 +18,8 @@ import {
 import { mostrarHistorico } from './historico.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  let palavraEditandoId = null;
+
   const syncAutoEl = document.getElementById('sync-automatica');
   const ordenacaoEl = document.getElementById('ordenacao');
 
